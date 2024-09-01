@@ -1,0 +1,82 @@
+BEGIN
+
+# Step 1: Load Dataset
+LOAD dataset from "1995-2024_fuel_consumption.csv" with encoding "latin-1" INTO DataFrame df
+
+# Step 2: Exploratory Data Analysis (EDA)
+PRINT shape of df
+PRINT first few rows of df
+PRINT count of missing values in each column
+PRINT data types of each column
+PRINT summary statistics for "CO2 emissions (g/km)"
+CHECK for duplicate rows in df
+CHECK for negative values in numerical columns
+
+# Step 3: Feature Engineering
+IDENTIFY numerical_features = ["Engine size", "Cylinders", "Fuel consumption (city)", "Fuel consumption (highway)"]
+IDENTIFY categorical_features = ["Vehicle class", "Transmission", "Fuel type"]
+
+# Create preprocessing pipelines
+CREATE numerical_transformer using StandardScaler
+CREATE categorical_transformer using OneHotEncoder
+CREATE preprocessor as ColumnTransformer with numerical_transformer and categorical_transformer
+
+# Step 4: Data Visualization
+FOR each numerical feature in numerical_features:
+    PLOT histogram of feature
+
+# ANOVA Analysis for Categorical Features
+FOR each categorical feature in categorical_features:
+    PERFORM ANOVA on "CO2 emissions (g/km)" grouped by categorical feature
+    PRINT ANOVA results
+
+# Outlier Detection
+FOR each numerical column in numerical_features:
+    DETECT outliers using Z-score method
+    DETECT outliers using IQR method
+    PRINT summary statistics of detected outliers
+    PLOT box plot for column
+
+# Plot Correlation Heatmap
+PLOT correlation heatmap for numerical_features
+
+# Step 5: Data Preprocessing and Splitting
+SPLIT df into train_set (80%), validation_set (10%), test_set (10%)
+DEFINE features as all columns except "CO2 emissions (g/km)"
+DEFINE target as "CO2 emissions (g/km)"
+
+# Step 6: Modeling and Evaluation
+DEFINE models = [LinearRegression, RandomForestRegressor, XGBRegressor]
+
+FOR each model in models:
+    CREATE model_pipeline with preprocessor and model
+    TRAIN model_pipeline on train_set
+    PREDICT on validation_set
+    EVALUATE model using MAE, MSE, RMSE, R²
+    STORE model performance metrics
+
+SELECT best_model based on lowest RMSE on validation_set
+TRAIN best_model on combined train and validation set
+TEST best_model on test set
+EVALUATE best_model using MAE, MSE, RMSE, R²
+PLOT residual plot for best_model
+
+# Step 7: Outlier Treatment
+APPLY Min-Max Scaling to numerical features
+APPLY Log Transformation to fuel consumption columns
+CAP outliers in "CO2 emissions (g/km)" at 99th percentile
+
+# Step 8: Re-evaluation after Outlier Treatment
+RE-RUN model training and evaluation steps after outlier treatment
+
+# Step 9: Hyperparameter Tuning
+DEFINE hyperparameter grid for RandomForestRegressor
+APPLY GridSearchCV or RandomizedSearchCV for hyperparameter tuning
+
+# Step 10: Learning Curves
+PLOT learning curve for each model (XGBRegressor, RandomForestRegressor)
+
+# Step 11: Cross-Validation
+PERFORM cross-validation on final model and PRINT results
+
+END
