@@ -32,7 +32,7 @@ PLOT count plots for categorical features
 # Step 6: Data Preprocessing
 DEFINE custom transformer for outlier handling 
 DEFINE custom transformer for ensuring non-negative values before log transformation
-CREATE pipeline for numerical features (e.g., scaling, log transformation)
+CREATE pipeline for numerical features (e.g., MinMax Scaling, log transformation)
 CREATE pipeline for categorical features (e.g., one-hot encoding)
 
 # Step 7: Data Splitting
