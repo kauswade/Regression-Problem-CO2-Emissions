@@ -1,4 +1,4 @@
-pseudocode
+cpseudocode
 BEGIN
 
 # Step 1: Load Dataset
@@ -47,7 +47,7 @@ APPLY preprocessing pipelines to training, validation, and test sets
 # Step 10: Model Selection and Evaluation
 DEFINE different regression models (e.g., Linear Regression, Decision Tree, Random Forest)
 TRAIN and evaluate models using pipelines
-CALCULATE evaluation metrics (e.g., MAE, MSE, RMSE, R-squared) for validation and test sets
+CALCULATE evaluation metrics (e.g., MAE, MSE, RMSE, R-squared, etc.) for validation and test sets
 IDENTIFY the best model based on chosen metric (e.g., lowest RMSE on validation set)
 
 # Step 11: Cross-Validation
