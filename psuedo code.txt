@@ -1,3 +1,4 @@
+pseudocode
 BEGIN
 
 # Step 1: Load Dataset
@@ -10,73 +11,50 @@ PRINT count of missing values in each column
 PRINT data types of each column
 PRINT summary statistics for "CO2 emissions (g/km)"
 CHECK for duplicate rows in df
-CHECK for negative values in numerical columns
+CHECK for negative values in relevant columns
 
-# Step 3: Feature Engineering
-IDENTIFY numerical_features = ["Engine size", "Cylinders", "Fuel consumption (city)", "Fuel consumption (highway)"]
-IDENTIFY categorical_features = ["Vehicle class", "Transmission", "Fuel type"]
+# Step 3: Feature Selection
+IDENTIFY numerical and categorical features
+CALCULATE correlation matrix for numerical features
+SELECT numerical features with high correlation based on threshold
+PERFORM ANOVA test for categorical features against "CO2 emissions (g/km)"
+SELECT categorical features with statistically significant relationship with "CO2 emissions (g/km)"
 
-# Create preprocessing pipelines
-CREATE numerical_transformer using StandardScaler
-CREATE categorical_transformer using OneHotEncoder
-CREATE preprocessor as ColumnTransformer with numerical_transformer and categorical_transformer
+# Step 4: Outlier Detection
+DETECT outliers using IQR method for numerical features
+DETECT outliers using z-score method for numerical features
 
-# Step 4: Data Visualization
-FOR each numerical feature in numerical_features:
-    PLOT histogram of feature
+# Step 5: Data Visualization
+PLOT box plots for numerical features before preprocessing
+PLOT histograms and scatter plots for numerical features
+PLOT count plots for categorical features
 
-# ANOVA Analysis for Categorical Features
-FOR each categorical feature in categorical_features:
-    PERFORM ANOVA on "CO2 emissions (g/km)" grouped by categorical feature
-    PRINT ANOVA results
+# Step 6: Data Preprocessing
+DEFINE custom transformer for outlier handling (e.g., winsorizing or removing)
+DEFINE custom transformer for ensuring non-negative values before log transformation
+CREATE pipeline for numerical features (e.g., scaling, log transformation)
+CREATE pipeline for categorical features (e.g., one-hot encoding)
 
-# Outlier Detection
-FOR each numerical column in numerical_features:
-    DETECT outliers using Z-score method
-    DETECT outliers using IQR method
-    PRINT summary statistics of detected outliers
-    PLOT box plot for column
+# Step 7: Data Splitting
+SPLIT data into training, validation, and test sets
 
-# Plot Correlation Heatmap
-PLOT correlation heatmap for numerical_features
+# Step 8: Outlier Handling
+APPLY outlier removal on training data (if applicable)
 
-# Step 5: Data Preprocessing and Splitting
-SPLIT df into train_set (80%), validation_set (10%), test_set (10%)
-DEFINE features as all columns except "CO2 emissions (g/km)"
-DEFINE target as "CO2 emissions (g/km)"
+# Step 9: Data Transformation
+APPLY preprocessing pipelines to training, validation, and test sets
 
-# Step 6: Modeling and Evaluation
-DEFINE models = [LinearRegression, RandomForestRegressor, XGBRegressor]
-
-FOR each model in models:
-    CREATE model_pipeline with preprocessor and model
-    TRAIN model_pipeline on train_set
-    PREDICT on validation_set
-    EVALUATE model using MAE, MSE, RMSE, R²
-    STORE model performance metrics
-
-SELECT best_model based on lowest RMSE on validation_set
-TRAIN best_model on combined train and validation set
-TEST best_model on test set
-EVALUATE best_model using MAE, MSE, RMSE, R²
-PLOT residual plot for best_model
-
-# Step 7: Outlier Treatment
-APPLY Min-Max Scaling to numerical features
-APPLY Log Transformation to fuel consumption columns
-CAP outliers in "CO2 emissions (g/km)" at 99th percentile
-
-# Step 8: Re-evaluation after Outlier Treatment
-RE-RUN model training and evaluation steps after outlier treatment
-
-# Step 9: Hyperparameter Tuning
-DEFINE hyperparameter grid for RandomForestRegressor
-APPLY GridSearchCV or RandomizedSearchCV for hyperparameter tuning
-
-# Step 10: Learning Curves
-PLOT learning curve for each model (XGBRegressor, RandomForestRegressor)
+# Step 10: Model Selection and Evaluation
+DEFINE different regression models (e.g., Linear Regression, Decision Tree, Random Forest)
+TRAIN and evaluate models using pipelines
+CALCULATE evaluation metrics (e.g., MAE, MSE, RMSE, R-squared) for validation and test sets
+IDENTIFY the best model based on chosen metric (e.g., lowest RMSE on validation set)
 
 # Step 11: Cross-Validation
-PERFORM cross-validation on final model and PRINT results
+PERFORM cross-validation for the best model
+
+# Step 12: Model Diagnostics
+PLOT residuals vs fitted values for the best model
+PLOT learning curve for the best model
 
 END
